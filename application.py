@@ -21,7 +21,7 @@ class MainFrame:
         filemenu.add_command(label="Open", command=self.choose_file_button)
         filemenu.add_command(label="Exit", command=app.quit)
 
-        # second box for imagee
+        # second box for image
         self.frame2 = Frame(frame, bg="green", width=200, height=150)
         self.frame2.pack(side=LEFT, anchor=N)
 
