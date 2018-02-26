@@ -26,7 +26,7 @@ class MainFrame:
         self.frame2.pack(side=LEFT, anchor=N)
 
         select_field = StringVar(app)
-        # initial value
+        # initial value.
         select_field.set('Grayscale')
         choices = ['Grayscale', 'Brightness', 'Contrast']
         option = OptionMenu(app, select_field, *choices)
