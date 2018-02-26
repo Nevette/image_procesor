@@ -21,12 +21,12 @@ class MainFrame:
         filemenu.add_command(label="Open", command=self.choose_file_button)
         filemenu.add_command(label="Exit", command=app.quit)
 
-        # second box for imagee
+        # second box for image
         self.frame2 = Frame(frame, bg="green", width=200, height=150)
         self.frame2.pack(side=LEFT, anchor=N)
 
         select_field = StringVar(app)
-        # initial value
+        # initial value.
         select_field.set('Grayscale')
         choices = ['Grayscale', 'Brightness', 'Contrast']
         option = OptionMenu(app, select_field, *choices)
