@@ -7,7 +7,6 @@ import PIL.Image
 class MainFrame:
     firstPhoto = None
 
-
     def __init__(self, frame):
         self.frame = frame
         frame.title("Image Procesor")
@@ -15,17 +14,30 @@ class MainFrame:
         frame.resizable(width=TRUE, height=TRUE)
         frame.geometry('{}x{}'.format(600, 600))
 
-        # second box for image
+        menu = Menu(app)
+        app.config(menu=menu)
+        filemenu = Menu(menu)
+        menu.add_cascade(label="File", menu=filemenu)
+        filemenu.add_command(label="Open", command=self.choose_file_button)
+        filemenu.add_command(label="Exit", command=app.quit)
+
+        # second box for imagee
         self.frame2 = Frame(frame, bg="green", width=200, height=150)
         self.frame2.pack(side=LEFT, anchor=N)
 
-        self.select_file_button = Button(frame, command=self.choose_file_button, text="Select file")
-        self.select_file_button.pack(side=LEFT, anchor=S)
+        select_field = StringVar(app)
+        # initial value
+        select_field.set('Grayscale')
+        choices = ['Grayscale', 'Brightness', 'Contrast']
+        option = OptionMenu(app, select_field, *choices)
+        option.pack(side='left', anchor=S)
 
-        self.choose_operation_button = Button(frame, text="Choose operation")
+        self.start_button = Button(frame, text="Start")
 
         self.start_button.pack(side=LEFT, anchor=S)
 
+        w = Scale(frame, from_=0, to=10, orient=HORIZONTAL)
+        w.pack(side=RIGHT, anchor=S)
 
     def choose_file_button(self):
         # open dialog window
