@@ -8,6 +8,7 @@ from copy import copy
 
 class MainFrame:
     source_image = None
+    original_image = None
     chosen_operation = None
     using_alfa = False
 
@@ -15,7 +16,7 @@ class MainFrame:
         self.frame = frame
         frame.title("Image Procesor")
         frame.resizable(width=TRUE, height=TRUE)
-        frame.geometry('{}x{}'.format(600, 400))
+        frame.geometry('{}x{}'.format(830, 450))
 
         menu = Menu(app)
         app.config(menu=menu)
@@ -29,18 +30,13 @@ class MainFrame:
         operations.add_command(label="Greyscale", command=self.convert_to_greyscale)
         operations.add_command(label="Brightness", command=self.convert_brightness)
 
-        select_field = StringVar(app)
-        # initial value
-        select_field.set('Greyscale')
-        choices = ['Greyscale', 'Brightness', 'Contrast']
-        option = OptionMenu(app, select_field, *choices)
-        option.pack(side='left', anchor=S)
-
-        self.start_button = Button(frame, text="Start")
-        self.start_button.pack(side=LEFT, anchor=S)
+        reset = Menu(menu)
+        menu.add_cascade(label="Reset", menu=reset)
+        reset.add_command(label="Reset current operation", command=self.reset_current_operation)
+        reset.add_command(label="Reset to original photo", command=self.reset_to_original_photo)
 
         scale = Scale(frame, from_=-1, to=1, orient=HORIZONTAL, resolution=0.01, command=self.slider_value)
-        scale.pack(side=RIGHT, anchor=S)
+        scale.pack(side=BOTTOM, anchor=S)
 
     def choose_file(self):
         # open dialog window
@@ -51,7 +47,7 @@ class MainFrame:
             self.using_alfa = True
 
         # set image size
-        size = 200, 200
+        size = 400, 400
         image.thumbnail(size, Image.ANTIALIAS)
 
         first_photo = ImageTk.PhotoImage(image)
@@ -59,17 +55,18 @@ class MainFrame:
         img.image = first_photo
         img.place(x=0, y=0)
 
-        size2 = 200, 200
+        size2 = 400, 400
         image.thumbnail(size2, Image.ANTIALIAS)
 
         self.source_image = image
+        self.original_image = copy(image)
         self.update_second_image(image)
 
     def update_second_image(self, image_data):
         second_photo = ImageTk.PhotoImage(image_data)
         img2 = Label(self.frame, image=second_photo)
         img2.image = second_photo
-        img2.place(x=300, y=0)
+        img2.place(x=420, y=0)
 
     def convert_to_greyscale(self):
         self.chosen_operation = Operation.GREYSCALE
@@ -123,6 +120,14 @@ class MainFrame:
     def slider_value(self, value):
         if self.chosen_operation == Operation.BRIGHTNESS:
             self.adjust_brightness(value)
+
+    # TODO check later if works properly
+    def reset_current_operation(self):
+        self.update_second_image(self.source_image)
+
+    def reset_to_original_photo(self):
+        image_data = self.original_image
+        self.update_second_image(image_data)
 
 
 class Operation(Enum):
